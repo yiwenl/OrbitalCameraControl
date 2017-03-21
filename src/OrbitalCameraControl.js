@@ -1,18 +1,18 @@
 import { vec3, mat4, quat } from 'gl-matrix';
 
-const getCursorPos = function(e) {
+const getCursorPos = function (e) {
 	if(e.touches) {
 		return {
 			x:e.touches[0].pageX,
 			y:e.touches[0].pageY
-		}
+		};
 	} else {
 		return {
 			x:e.clientX,
 			y:e.clientY
-		}
+		};
 	}
-}
+};
 
 const UP = vec3.fromValues(0, 1, 0);
 const ANGLE_LIMIT = (Math.PI/2 - 0.01);
@@ -40,16 +40,20 @@ class OrbitalCameraControl {
 		this._try = 0;
 		this._prevy = 0;
 
+		this._quat = quat.create();
+		this._vec = vec3.create();
+		this._mtx = mat4.create();
+
 
 		this._mouseDown = {
 			x:0,
 			y:0
-		}
+		};
 
 		this._mouse = {
 			x:0,
 			y:0
-		}
+		};
 
 		this._init();
 	} 
@@ -129,8 +133,8 @@ class OrbitalCameraControl {
 
 
 	update() {
-		let dx = this._mouse.x - this._mouseDown.x;
-		let dy = this._mouse.y - this._mouseDown.y;
+		const dx = this._mouse.x - this._mouseDown.x;
+		const dy = this._mouse.y - this._mouseDown.y;
 
 		const senstivity = 0.02 * this.senstivityRotation;
 		this._try = this._prevy - dx * senstivity;
@@ -146,21 +150,19 @@ class OrbitalCameraControl {
 		this._ry += (this._try - this._ry) * this.easing;
 		this._radius += (this._targetRadius - this._radius) * this.easing;
 
-		const q = quat.create();
-		
-		quat.rotateY(q, q, this._ry);
-		quat.rotateX(q, q, this._rx);
+		quat.identity(this._quat);		
+		quat.rotateY(this._quat, this._quat, this._ry);
+		quat.rotateX(this._quat, this._quat, this._rx);
 
-		let v = vec3.fromValues(0, 0, this._radius);
-		vec3.transformQuat(v, v, q);
+		vec3.set(this._vec, 0, 0, this._radius);
+		vec3.transformQuat(this._vec, this._vec, this._quat);
 
-
-		let m = mat4.create();
-		mat4.lookAt(m, v, this.center, UP);
+		mat4.identity(this._mtx);
+		mat4.lookAt(this._mtx, this._vec, this.center, UP);
 
 
 		if(this._mtxTarget) {
-			mat4.copy(this._mtxTarget, m);
+			mat4.copy(this._mtxTarget, this._mtx);
 		}
 	}
 

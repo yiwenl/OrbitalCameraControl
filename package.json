@@ -1,0 +1,28 @@
+{
+  "name": "orbital-camera-control",
+  "version": "1.0.0",
+  "description": "Orbital camera control using gl-matrix",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://yiwenl@github.com/yiwenl/OrbitalCameraControl.git"
+  },
+  "keywords": [
+    "webgl",
+    "html5",
+    "camera",
+    "glMatrix"
+  ],
+  "author": "Yi-Wen Lin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yiwenl/OrbitalCameraControl/issues"
+  },
+  "homepage": "https://github.com/yiwenl/OrbitalCameraControl#readme",
+  "devDependencies": {
+    "gl-matrix": "^2.3.2"
+  }
+}
